@@ -32,10 +32,11 @@ var allParcelsSizes = parcels{
 }
 
 func (p *Parcel) CalculateCost() {
+	p.price = extraLargePackagePostagePrice
 	for _, parcel := range allParcelsSizes {
 		if p.width <= parcel.width && p.length <= parcel.length && p.height <= parcel.height {
 			p.price = parcel.price
+			break
 		}
 	}
-	p.price = extraLargePackagePostagePrice
 }
