@@ -9,7 +9,7 @@ func TestCostCalculator(t *testing.T) {
 		Parcel Parcel
 	}{
 		{
-			Name:  "Small package postage cost should be 2.0",
+			Name:  "Parcel 15x10x5 should be considered 'Small' and price should be 2.0",
 			Price: 2.0,
 			Parcel: Parcel{
 				width:  15.0,
@@ -18,7 +18,7 @@ func TestCostCalculator(t *testing.T) {
 			},
 		},
 		{
-			Name:  "Medium package postage cost should be 3.5",
+			Name:  "Parcel 20x15x10 should be considered 'Medium' and price should be 3.5",
 			Price: 3.5,
 			Parcel: Parcel{
 				width:  20.0,
@@ -27,7 +27,7 @@ func TestCostCalculator(t *testing.T) {
 			},
 		},
 		{
-			Name:  "Large package postage cost should be 7.0",
+			Name:  "Parcel 25x20x15 should be considered 'Large' and price should be 7.0",
 			Price: 7.0,
 			Parcel: Parcel{
 				width:  25.0,
@@ -36,7 +36,34 @@ func TestCostCalculator(t *testing.T) {
 			},
 		},
 		{
-			Name:  "Extra Large package postage cost should be 10.0",
+			Name:  "Parcel 15x1x1 should be considered 'Large' and price should be 7.0",
+			Price: 7.0,
+			Parcel: Parcel{
+				width:  25.0,
+				length: 1.0,
+				height: 1.0,
+			},
+		},
+		{
+			Name:  "Parcel 1x10x1 should be considered 'Large' and price should be 7.0",
+			Price: 7.0,
+			Parcel: Parcel{
+				width:  1.0,
+				length: 20.0,
+				height: 1.0,
+			},
+		},
+		{
+			Name:  "Parcel 1x1x5 should be considered 'Large' and price should be 7.0",
+			Price: 7.0,
+			Parcel: Parcel{
+				width:  1.0,
+				length: 1.0,
+				height: 15.0,
+			},
+		},
+		{
+			Name:  "Parcel 30x25x20 should be considered 'Extra Large' and price should be 10.0",
 			Price: 10.0,
 			Parcel: Parcel{
 				width:  30,
@@ -59,6 +86,7 @@ func TestCostCalculator(t *testing.T) {
 }
 
 func assertPrice(t *testing.T, got float64, want float64) {
+	t.Helper()
 	if got != want {
 		t.Errorf("got '%e' want '%e'", got, want)
 	}

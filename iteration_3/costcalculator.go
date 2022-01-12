@@ -46,7 +46,7 @@ var allParcelsSizes = parcels{
 var ParcelTooLargeErr = errors.New("parcel too large for postage")
 
 func (p *Parcel) CalculateCost() error {
-	if p.width > extraLargeParcel.width || p.length > extraLargeParcel.length && p.height > extraLargeParcel.height {
+	if p.width > extraLargeParcel.width || p.length > extraLargeParcel.length || p.height > extraLargeParcel.height {
 		return ParcelTooLargeErr
 	}
 	for _, parcel := range allParcelsSizes {

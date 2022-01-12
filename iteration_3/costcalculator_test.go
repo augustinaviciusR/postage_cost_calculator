@@ -10,7 +10,7 @@ func TestCostCalculator(t *testing.T) {
 		expectedErr error
 	}{
 		{
-			Name:  "Small package postage cost should be 2.0",
+			Name:  "Parcel 15x10x5 should be considered 'Small' and price should be 2.0",
 			Price: 2.0,
 			Parcel: Parcel{
 				width:  15.0,
@@ -20,7 +20,7 @@ func TestCostCalculator(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			Name:  "Medium package postage cost should be 3.5",
+			Name:  "Parcel 20x15x10 should be considered 'Medium' and price should be 3.5",
 			Price: 3.5,
 			Parcel: Parcel{
 				width:  20.0,
@@ -30,7 +30,7 @@ func TestCostCalculator(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			Name:  "Large package postage cost should be 7.0",
+			Name:  "Parcel 25x20x15 should be considered 'Large' and price should be 7.0",
 			Price: 7.0,
 			Parcel: Parcel{
 				width:  25.0,
@@ -40,7 +40,37 @@ func TestCostCalculator(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			Name:  "Extra Large package postage cost should be 10.0",
+			Name:  "Parcel 15x1x1 should be considered 'Large' and price should be 7.0",
+			Price: 7.0,
+			Parcel: Parcel{
+				width:  25.0,
+				length: 1.0,
+				height: 1.0,
+			},
+			expectedErr: nil,
+		},
+		{
+			Name:  "Parcel 1x10x1 should be considered 'Large' and price should be 7.0",
+			Price: 7.0,
+			Parcel: Parcel{
+				width:  1.0,
+				length: 20.0,
+				height: 1.0,
+			},
+			expectedErr: nil,
+		},
+		{
+			Name:  "Parcel 1x1x5 should be considered 'Large' and price should be 7.0",
+			Price: 7.0,
+			Parcel: Parcel{
+				width:  1.0,
+				length: 1.0,
+				height: 15.0,
+			},
+			expectedErr: nil,
+		},
+		{
+			Name:  "Parcel 30x25x20 should be considered 'Extra Large' and price should be 10.0",
 			Price: 10.0,
 			Parcel: Parcel{
 				width:  30,
@@ -50,12 +80,29 @@ func TestCostCalculator(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			Name:  "Too Large package postage error should be returned",
-			Price: 0.0,
+			Name: "Parcel 31x25x20 should be too large 'ParcelTooLargeErr' error should be returned",
 			Parcel: Parcel{
 				width:  31,
+				length: 25,
+				height: 20,
+			},
+			expectedErr: ParcelTooLargeErr,
+		},
+		{
+			Name: "Parcel 30x26x20 should be too large 'ParcelTooLargeErr' error should be returned",
+			Parcel: Parcel{
+				width:  30,
 				length: 26,
-				height: 25,
+				height: 20,
+			},
+			expectedErr: ParcelTooLargeErr,
+		},
+		{
+			Name: "Parcel 30x25x21 should be too large 'ParcelTooLargeErr' error should be returned",
+			Parcel: Parcel{
+				width:  30,
+				length: 25,
+				height: 21,
 			},
 			expectedErr: ParcelTooLargeErr,
 		},
@@ -77,7 +124,7 @@ func TestCostCalculator(t *testing.T) {
 func assertError(t *testing.T, got, want error) {
 	t.Helper()
 	if got != want {
-		t.Errorf("got '%e' want '%e'", got, want)
+		t.Errorf("got '%s' want '%s'", got, want)
 	}
 
 }
